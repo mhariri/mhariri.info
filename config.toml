@@ -39,7 +39,7 @@ paginatePath = "page"
     highlight = "default"
 
     # Google Analytics.
-    googleAnalytics = "Your Google Analytics tracking code"
+    googleAnalytics = "UA-72688412-1"
 
 
     # Sidebar social links.
