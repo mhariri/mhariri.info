@@ -1,6 +1,6 @@
 baseurl = "/"
 languageCode = "en-us"
-title = "Mohsen's Corner of the Web"
+title = "Posts"
 
 theme = "hyde-y"
 
