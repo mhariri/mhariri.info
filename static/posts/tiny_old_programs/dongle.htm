@@ -1,0 +1,242 @@
+
+<!-- saved from url=(0041)http://mhariri.info/myproggies/dongle.htm -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body bgcolor="#c0c0c0" data-feedly-mini="yes"><header>
+<center>
+<h2>Removing Rainbow shell without the dongle access</h2>
+</center>
+</header>
+
+<center>
+<table width="80%">
+<tbody><tr>
+<td>
+<p>
+<font face="courier" size="4">
+Rainbow dongle has been used in many commercial programs.
+The software that is distributed along this dongle, has a
+program called 'rainbow shell' which can cover an executable
+file under a protection layer. This protection layer encrypts
+the file using the response values that receives from the dongle.
+The dongle recommends using the shell program along with
+the developer's own customized protection together. But I see
+many programs protection depending just upon the shell protection,
+or using a very simple customized protection. This article shows
+a weakness in the shell protection layer.
+</font></p><font face="courier" size="4">
+<p>
+Now let's have an overview of the dongle features. There are
+some different species, we will discuss Rainbow SentinelSuperPro
+in here, which is "SentinelSuperPro is the most secure, flexible,
+programmable key available to prevent software piracy .. With 128
+bytes of read/write memory organized into 64 16-bit words."(cut from 
+its specifications sheet...). Each of these 64 16-bit words are
+called a cell. The first 8 cells are inaccessible, and 56 of them
+can be programmed in one of 4 modes: 
+</p><ol>
+<li>Read/Write Mode</li>
+<li>Read Only Mode</li>
+<li>Counter Mode</li>
+<li>Hidden(Locked, Algorithm) Mode</li>
+</ol>
+
+<font face="courier" size="4">
+To change the mode of the cells, one needs to know the overwrite
+password of the dongle. I just explain the fourth mode, because
+we don't need the other modes for our job in this article.
+<p></p>
+
+<p>
+When a cell is in Hidden(Locked, Algorithm) Mode, its value cannot
+be read, and it can only be used to send a query to it and receive
+the response. Same queries return same responses, but you cannot
+guess the response having just the query, unless you have the dongle.
+For more information refer to SentinelPro Documentation.
+</p>
+<p>
+Rainbow shell uses this kind of cells to encrypt the application.
+It stores the query values in the executable, and uses the response
+values to decode it.
+</p>
+<p>
+Now enough theory, let's see a real protected application.
+You will need these programs to go further in this article:
+</p><ol>
+<li>PE Explorer(we need a program to seperate an executable sections,
+               many executable editors do the job.)</li>
+<li>Micro$oft Visual C++(a win32 C++ compiler would suffice)</li>
+<li>NamehNegar (Build : 3.1.3006.0)(a delphi program, it's in Farsi(Iranians language, Persian...),
+I just selected this because it could be downloaded easily from the internet.)</li>
+<li>Your favourite debugger, I will use M$ Visual Studio(yeah I like it).</li>
+</ol>
+
+
+OK, now fire up PE Explorer and load the victim executable into the program.
+Taking a glance at the shelled executable, shows that the code
+and data (0000001 and 0000002) sections are encrypted...
+other sections seem intact. Taking a look at the resources shows
+us that we are working on a program written in delphi 6(RC Data just
+shows this... PE Explorer does its job perfect!).
+<p></p>
+
+<p>
+Now the hard job, traceing the victim... I first located
+the places that the program tried to talk to the dongle,
+then set breakpoints on them... you need to make the program
+think the dongle is present... tracing the program took
+me to the decoding place , decryption procedure here:
+<code>
+</code></p><pre><code>
+//prototype : Decode(DWORD *where,DWORD size,DWORD key) 
+
+00417F74 57                   push        edi
+00417F75 8B 74 24 14          mov         esi,dword ptr [esp+14h] ;size
+00417F79 C1 EE 02             shr         esi,2
+00417F7C 8B CE                mov         ecx,esi
+00417F7E 4E                   dec         esi
+00417F7F 85 C9                test        ecx,ecx
+00417F81 74 31                je          00417FB4
+00417F83 8B 54 24 10          mov         edx,dword ptr [esp+10h] ;where
+00417F87 8B 7C 24 18          mov         edi,dword ptr [esp+18h] ;key
+00417F8B 8B CF                mov         ecx,edi
+00417F8D 8B DF                mov         ebx,edi
+00417F8F C1 E1 04             shl         ecx,4
+00417F92 83 C2 04             add         edx,4
+00417F95 C1 E3 05             shl         ebx,5
+00417F98 03 CF                add         ecx,edi
+00417F9A C1 E9 09             shr         ecx,9
+00417F9D 33 CB                xor         ecx,ebx
+00417F9F 03 F9                add         edi,ecx
+00417FA1 8B 4A FC             mov         ecx,dword ptr [edx-4]
+00417FA4 33 CF                xor         ecx,edi
+00417FA6 03 C1                add         eax,ecx
+00417FA8 89 4A FC             mov         dword ptr [edx-4],ecx
+00417FAB 33 F8                xor         edi,eax
+00417FAD 8B CE                mov         ecx,esi
+00417FAF 4E                   dec         esi
+00417FB0 85 C9                test        ecx,ecx
+00417FB2 75 D7                jne         00417F8B
+00417FB4 5F                   pop         edi
+00417FB5 5E                   pop         esi
+00417FB6 5B                   pop         ebx
+00417FB7 C2 0C 00             ret         0Ch
+//////////////////////////
+</code></pre><code>
+<code>
+
+<p>
+<font face="courier" size="4">
+This procedure in C++ would be:
+</font></p><font face="courier" size="4">
+<code>
+<pre>//////////////////////////
+void decode(DWORD *where, DWORD size, DWORD key)
+{
+	DWORD sum=0;
+	
+	while(size--) {
+		key += (key * 5 / 512) ^ (key * 32);
+		*where ^= key;
+		sum += *where;
+		key ^= sum;
+		where ++;
+	}
+}
+//////////////////////////
+</pre>
+</code>
+
+<p>
+<font face="courier" size="4">
+This procedure is executed for each of encrypted sections. So
+4 bytes(the 'key' value) is needed to decrypt each section.
+This key is the response of a query from dongle, so cannot
+be guessed by looking at the query. But, what if we could
+guess the first four bytes of each section?
+</font></p><font face="courier" size="4">
+<p>
+Many of you have seen those "...Boolean...False...True" signs
+put in the beginning of Delphi programs. A little more inspection
+shows up that the data section also starts with the constant bytes.
+So the missing 4 bytes are here, and the problem is solved!
+</p>
+
+<p>
+Digging deeper and deeper in the program, gives us the entry point.
+You can see it in the first section following the resource section
+(0000009), at offset 120. This section is encrypted with the first
+four bytes of its own start. so a new idea... you can find the entry
+point of the program even if you cannot guess the starting DWORD of
+any section.
+</p>
+
+<p>
+Now glue the decrypted sections together and we need just some
+other fixations to make the program work. Set Import Directory
+reference to 58e000, size : 2a32h. It could be guessed by a simple
+look at the sections. Then change the size of code and size of initialized
+data to 147c00 and a7600 respectively. They help windows allocate
+enough space for the program, so they are needed for the program
+to run.
+</p>
+<p>
+After reconstructing the program, you see a simple protection system
+in it. For somebody who has understood what I've said till here,
+removing this protection is just a piece of cake. I won't spend
+time explaining it here, cause we just wanted to remove the shell;)
+</p>
+
+
+<p>
+One question comes into mind. Can we decrypt
+the secion by knowing 4 bytes(aligned on the 4 bytes boundry)
+in the middle of a section?(for example
+many VC++ programs have constant bytes in them...)
+</p>
+<p>
+The answer is NO. &gt;:(
+</p>
+<p>
+But what about 8 bytes(aligned ...), or more?
+</p>
+<p>
+I'm still in doubt about that. But I think it's possible. Maybe you can help me. ;)
+</p>
+<p>
+<font face="courier" size="4">
+So we need to guess 4 first bytes of a section or 8(or more) bytes aligned
+on the 4 bytes boundry anywhere else in the executable file.
+VC++ programs have the same bytes at the entry point.
+All VC++ executables have constant bytes in .rdata section like
+'runtime error' string (it sometimes changes place, but some
+places are most common and worth trying).
+But what about .data section? A 0h value for the start of this
+section wouldn't be a bad guess, cause many global variables
+are set to zero at the program startup. But anyway it's just a guess.
+</font></p><font face="courier" size="4">
+<p>
+Maybe some of you get dissapointed by impossibility of a correct
+guess to find out the missing bytes, but wait... THERE IS ONE
+SOLUTION. The shell encryptor procedure has one flaw! It padds the
+sections to make them multiple of section alignment.(Many compilers do the same I think)
+So what would
+it put in the padding places? whooaaa... zero. So we just need
+a section that needs 8(or more) bytes padding, which occures in many
+(if we don't say all of) programs.
+</p>
+<p>
+Considering all of these guessing probabilities, it is possible
+to guess 8(or more) bytes of any program. So for the software developers,
+DON'T COUNT ON THE SHELL PROTECTION.
+</p>
+
+Written by:<br>
+peak<br>
+using notepad;)<br>
+11:57 PM 8/2/2003<br>
+
+</font></font></font></code></code></font></font></td>
+</tr>
+</tbody></table>
+<center>
+
+</center></center></body></html>

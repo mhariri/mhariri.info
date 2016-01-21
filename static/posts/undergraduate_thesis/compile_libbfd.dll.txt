@@ -1,0 +1,29 @@
+NOTE: I have used the binutils-2.15, it is not the last version, because
+      mingw libiberty library could not resolve a function in 2.16
+      (function name was 'unlink_if_ordinay', maybe the next version of
+      mingw fix this)
+
+
+1. download mingw & gcc-core & msys, install them, and copy /lib & /inlcude directories to <cygwin>/mlib and <cygwin>/minclude respectively.
+(for more info see http://www.delorie.com/howto/cygwin/mno-cygwin-howto.html)
+
+2.compile bfd using:
+	CPPFLAGS="-mno-cygwin -I/minclude" ./configure --disable-nls
+	make
+
+3.then run:
+
+cd bfd/.libs/
+dlltool.exe libbfd.a --export-all-symbols --output-def bfd.def
+mkdir tmp
+cp libbfd.a tmp/
+cd tmp
+ar x libbfd.a
+
+dllwrap --target=i386-mingw32 -mno-cygwin *.o  --def ../bfd.def -o ../bfd.dll -L/mlib -liberty --implib=../bfd.lib
+
+
+#note: generated import lib seems to be corrupt, so use lib /def:bfd.def to create the import lib
+
+
+

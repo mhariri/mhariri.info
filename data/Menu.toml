@@ -1,0 +1,4 @@
+[about]
+    Name = "About"
+    Title = "About me"
+    URL = "/about"
