@@ -1,0 +1,25 @@
+<!doctype html>
+<html ng-app="App" lang="fa" dir="rtl">
+  <head>
+    <title>My Angular App</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+    <script src="app.js"></script>
+  </head>
+  <body ng-controller="NamesCtrl">
+    <form dir="ltr">
+      <fieldset>
+        <legend>Filters:</legend>
+        <label>Girl names<input type="checkbox" ng-model="girls"></label><br>
+        <label>Boy names<input type="checkbox" ng-model="boys"></label><br>
+        <label>Non-arabic names<input type="checkbox" ng-model="non_arabic"></label><br>
+        <label>Non-hebrew names<input type="checkbox" ng-model="non_hebrew"></label><br>
+      </fieldset>
+    </form>
+    <li ng-repeat="name in names | filter:names_filter" class="name_container">
+       <span class="index">{{$index+1}}</span>
+       <span class="name">{{name.name}}</span>
+       <span class="meaning">{{name.meaning}}</span>
+    </li>
+  </body>
+</html>

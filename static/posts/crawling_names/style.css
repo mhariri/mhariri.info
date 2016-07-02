@@ -1,0 +1,26 @@
+BODY {
+  font-family: tahoma;
+}
+
+.index {
+  min-width: 20px;
+  display: inline-block;
+}
+
+.name {
+  font-weight: bold;
+  min-width: 80px;
+  display: inline-block;
+}
+
+.name::after {
+  font-weight: normal;
+}
+
+.name_container {
+  list-style-type: none;
+}
+
+.meaning {
+  font-size: .8em;
+}
