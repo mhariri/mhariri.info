@@ -2,7 +2,7 @@
 date = "2016-06-02T21:49:10+01:00"
 draft = false
 description = "Crawling Persian names website"
-keywords = ["crawling", "flask", ""]
+keywords = ["crawling", "flask", "ایرانی", "نام ایرانی" , "persian names"]
 title = "Persian names"
 type = "post"
 +++
