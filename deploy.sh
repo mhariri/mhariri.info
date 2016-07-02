@@ -1,4 +1,4 @@
 #!/bin/bash
 
 hugo
-scp -r public/* mhariri.info:public_html/
+rsync -vr public mhariri.info:public_html

@@ -34,14 +34,14 @@ into a more suitable place for searching? I thought just running
 `json.stringify(window.localStorage)` should do the job, but seems the
 amount of data in `window.localStorage` is a too big bite for the browser.
 It took more than 5 minutes and I was still waiting for 6000+ names to be printed
-in the console.
+in the console. So it did not seem to work.
 
 So, plan B, I threw a simple Python flask app to be able to post all the names from
 javascript in there and store them as a file. Here's the flask app:
 [dumper python app](dumper.py).
 The app also cleans up and removes duplicates from the names.
 
-And this is how I sent the names from the javasctipt console to the python app,
+And this is how I could send the names from javascript console to the python app,
 listening on port 5000:
 ```
 $.ajaxSetup({
