@@ -9,7 +9,7 @@ type = "post"
 
 ##### Intro
 I'm gonna be a daddy in 3 weeks, and we're still thinking about the names.
-The Persian names that are allowed by Iran government (yes, you cannot give
+The Persian names that are allowed by Iranian government (yes, you cannot pick
 any name you want), is listed in https://www.sabteahval.ir/ website. The
 UX of that website is really awful, so I decided to crawl the website and
 just go through the names in an easier way.
