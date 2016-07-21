@@ -20,8 +20,8 @@ App.controller('NamesCtrl', function($scope, $http) {
       return false;
     return value;
   };
-  $scope.girls = false;
+  $scope.girls = true;
   $scope.boys = true;
-  $scope.non_arabic = true;
-  $scope.non_hebrew = true;
+  $scope.non_arabic = false;
+  $scope.non_hebrew = false;
 });
