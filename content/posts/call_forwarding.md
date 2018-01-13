@@ -3,7 +3,7 @@ date = "2018-01-13T00:00:00+01:00"
 draft = false
 description = "Extracting the service API from Telenor android app"
 keywords = ["Telenor", "API", "Decompile", "Android", "Call forwarding"]
-title = "Telenor Open(ed) Subscriber API"
+title = "Telenor Subscriber Open(ed) API"
 type = "post"
 +++
 
