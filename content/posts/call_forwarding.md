@@ -54,7 +54,6 @@ AuthHeader authHeader = getEncodedAuthHeader(ApiConstants.BASIC_HTTP_USERNAME + 
 connection.setRequestProperty(authHeader.getName(), authHeader.getValue());
 {{< /highlight >}}
 
-
 Based on that, here is my first request:
 ```nohighlight
 $ http -v -a "knowit|me@he.re:knowit_prod|****" GET "https://api.telenor.se/c/users/me@he.re/basic" X-version:1.0 x-telenor-version:1.0
@@ -93,7 +92,7 @@ X-XSS-Protection: 1; mode=block
     "subscriptions": [
         {
             "errorMessages": null,
-            "msisdn": "46738966..",
+            "msisdn": "46738966872",
             "subscriptionBasic": {
   ....
           }
@@ -103,15 +102,18 @@ X-XSS-Protection: 1; mode=block
 }
 ```
 
+The username and password are prefixed by `knowit|` and `knowit_prod|` respectively.
+So just replace `me@he.re` with the email address and `****` with the password
+that you used when registering the Telenor app.
 
 And to get the call forwarding settings, one can use:
 ```nohighlight
-http -v -a "knowit|me@he.re:knowit_prod|*****" GET "https://api.telenor.se/c/users/me@he.re/46738966../callforward/v2" X-version:1.0 x-telenor-version:1.0
+http -v -a "knowit|me@he.re:knowit_prod|*****" GET "https://api.telenor.se/c/users/me@he.re/46738966872/callforward/v2" X-version:1.0 x-telenor-version:1.0
 ```
 To set the minimum wait time for no-answer call forwarding:
 
 ```nohighlight
-http -v -a "knowit|me@he.re:knowit_prod|*****" PUT "https://api.telenor.se/c/users/me@he.re/46738966../callforward/v2/46108848348/cfna/5" X-version:1.0 x-telenor-version:1.0
+http -v -a "knowit|me@he.re:knowit_prod|*****" PUT "https://api.telenor.se/c/users/me@he.re/46738966872/callforward/v2/46108848348/cfna/5" X-version:1.0 x-telenor-version:1.0
 ```
 
 The service only accepts a wait value that is a multiplier of 5 and bigger than 0.
