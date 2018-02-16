@@ -4,7 +4,9 @@
     <meta name="fragment" content="!">
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Angular App</title>
+    <title>Persian Names</title>
+    <meta name="description" content="Search Persian Names">
+    <meta name="keywords" content="persian names,persian girls names,persian boys names">
     <link rel="stylesheet" href="style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
     <script src="app.js"></script>
@@ -15,8 +17,8 @@
         <legend>Filters:</legend>
         <label>Girl names<input type="checkbox" ng-model="girls"></label><br>
         <label>Boy names<input type="checkbox" ng-model="boys"></label><br>
-        <label>Non-arabic names<input type="checkbox" ng-model="non_arabic"></label><br>
-        <label>Non-hebrew names<input type="checkbox" ng-model="non_hebrew"></label><br>
+        <label>Hide Arabic names<input type="checkbox" ng-model="non_arabic"></label><br>
+        <label>Hide Hebrew names<input type="checkbox" ng-model="non_hebrew"></label><br>
       </fieldset>
     </form>
     <li ng-repeat="name in names | filter:names_filter" class="name_container">
