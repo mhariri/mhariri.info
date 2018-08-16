@@ -1,4 +1,4 @@
 #!/bin/bash
 
 hugo
-rsync -va public/ mhariri.info_new:www/mhariri.info
+rsync -va public/ mhariri.info:www/mhariri.info
