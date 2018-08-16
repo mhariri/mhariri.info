@@ -13,7 +13,7 @@ type = "post"
 I disabled Gmail categories a while back, and I think you should do it too.
 For a long time, I have been a strict follower of the [Inbox Zero](https://www.entrepreneur.com/article/290175) method. When
 Gmail introduced `Gmail Categories` in 2013, I quickly jumped on it and felt
-I'm even in more control of my inbox which would in turn bring me higher productivity.
+I'm even in higher control of my inbox which would in turn increase my productivity.
 
  But, the productivity promise turned out wrong. After using that new service for a few years, I'm getting the same feelings
 as I did before starting with that method: missing important emails, a lot of junk emails just laying in my "updates" and "promotions" categories, and occasional long time spent on email checking.
