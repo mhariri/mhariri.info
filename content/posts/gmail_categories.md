@@ -3,7 +3,7 @@ date = "2018-02-16T00:00:00+01:00"
 draft = false
 description = "Why you should disable Gmail categories"
 keywords = ["Gmail categories", "productivity", "inbox zero"]
-title = "Gmail Categories Kills Productivity"
+title = "Gmail Categories Kill Productivity"
 type = "post"
 +++
 
