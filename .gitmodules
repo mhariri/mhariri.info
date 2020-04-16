@@ -1,0 +1,3 @@
+[submodule "static/about/resume"]
+	path = static/about/resume
+	url = https://github.com/mhariri/resume
