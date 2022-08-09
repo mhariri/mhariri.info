@@ -1,6 +1,6 @@
 [submodule "static/about/resume"]
 	path = static/about/resume
-	url = https://github.com/mhariri/resume
+	url = git@github.com:mhariri/resume.git
 [submodule "themes/hyde-y"]
 	path = themes/hyde-y
-	url = https://github.com/enten/hyde-y.git
+	url = git@github.com:mhariri/hyde-y.git
