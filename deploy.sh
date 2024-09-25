@@ -1,4 +1,4 @@
 #!/bin/bash
 
 hugo
-rsync -va public/ mhariri.info:www/mhariri.info
+aws --profile private s3 cp public s3://www.mhariri.info/ --recursive
