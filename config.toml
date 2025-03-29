@@ -7,10 +7,6 @@ theme = "hyde-y"
 # Enable Disqus integration
 # disqusShortname = "mhariri"
 
-# Pagination
-paginate = 10
-paginatePath = "page"
-
 
 [permalinks]
     post = "/:year/:month/:day/:slug/"
